@@ -10,8 +10,8 @@ class ListAllUsersUseCase {
 
   execute({ user_id }: IRequest): User[] {
     const userAlreadyExists = this.usersRepository.findById(user_id);
-    if (!userAlreadyExists) {
-      throw new Error("User not found");
+    if (!userAlreadyExists || userAlreadyExists.admin === false) {
+      throw new Error("User not found or User without admin authorization");
     }
     const users = this.usersRepository.list();
     return users;
