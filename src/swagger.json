@@ -1,0 +1,351 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "User Registration",
+        "description": "API para criação de usuários",
+        "version": "1.0.0",
+        "contact":{
+            "email":"alimadeoliveiranatalia@gmail.com",
+            "likn":"https://www.linkedin.com/in/nat%C3%A1lia-lima-oliveira-969330124/"
+        }
+    },
+    "paths":{
+        "/users": {
+            "post": {
+                "tags":["Users"],
+                "sumary": "Criar um novo Usuário",
+                "description": "Criar um usuario",
+                "requestBody": {
+                    "content": {
+                        "application/json" : {
+                            "shema": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type":"string"
+                                    },
+                                    "email": {
+                                        "type":"string"
+                                    }
+                                },
+                                "example": {
+                                    "name": "Natália Lima",
+                                    "email":"seu_email@mail.com"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Usuário criado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "shema": {
+                                    "type":"object",
+                                    "properties": {
+                                        "name": {
+                                            "type":"string"
+                                        },
+                                        "admin": {
+                                            "type":"string"
+                                        },
+                                        "email": {
+                                            "type":"string"
+                                        },
+                                        "created_at": {
+                                            "type":"string"
+                                        },
+                                        "updated_at": {
+                                            "type":"string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description":"User Alreay Exists",
+                        "content": {
+                            "application/json": {
+                                "shema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "error": {
+                                                "type":"string"
+                                            }
+                                        },
+                                        "example": {
+                                            "error": "Email Already Exists!"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                    }
+                    
+                }
+            },
+            "get": {
+                "tags":["Users"],
+                "sumary": "List all Users",
+                "description": "Retorna todos os usuários se quem estiver solicitando for um usuário admin",
+                "parameters":[
+                    {
+                        "in":"header",
+                        "name":"user_id",
+                        "shema": {
+                            "type":"string"
+                        },
+                        "required": true,
+                        "minimum": 1,
+                        "description":"Parameter user admin"
+                    }
+                ],
+                "response":{
+                    "201": {
+                        "description": "Sucess",
+                        "content": {
+                            "application/json": {
+                                "shema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "id": {
+                                                "type": "string"
+                                            },
+                                            "name": {
+                                                "type": "string"
+                                            },
+                                            "admin": {
+                                                "type": "boolean"
+                                            },
+                                            "email": {
+                                                "type": "string"
+                                            },
+                                            "created_at": {
+                                                "type": "string"
+                                            },
+                                            "updated_at": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "example": [
+                                            {
+                                                "id":"2476f2cb-185f-46f0-8e1e-d67e3335b43c",
+                                                "admin": false,
+                                                "name": "Username1",
+                                                "email":"seu_email@mail.com",
+                                                "created_at":"2022-03-10T03:14:39.861Z",
+                                                "updated_at":"2022-03-10T03:14:39.861Z"
+                                            },
+                                            {
+                                                "id": "2476f2cb-185f-46f0-8e1e-d67e3335b43c",
+                                                "admin": true,
+                                                "name":"Natália Lima",
+                                                "email":"seu_email@mail.com",
+                                                "created_at":"2022-03-10T03:14:39.861Z",
+                                                "updated_at":"2022-03-10T03:18:09.484Z"
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description":"",
+                        "content": {
+                            "application/json": {
+                                "shema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "example": {
+                                        "error": "User not exists or You need to be an administrator to list all users"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/users/:user_id/admin": {
+            "patch": {
+                "tags":["Users"],
+                "sumary": "User admin",
+                "description":"Concede status admin à um usuário específico",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "user_id",
+                        "shema": {
+                            "type": "string"
+                        },
+                        "required": true,
+                        "minimum": 1,
+                        "description": "Parameter user to admin"
+                    }
+                ],
+                "response": {
+                    "201": {
+                        "description": "Sucess",
+                        "content": {
+                            "application/json": {
+                                "shema": {
+                                    "type": "array",
+                                    "properties": {
+                                        "id": {
+                                            "type": "string"
+                                        },
+                                        "name": {
+                                            "type": "string"
+                                        },
+                                        "admin": {
+                                            "type": "boolean"
+                                        },
+                                        "email": {
+                                            "type": "string"
+                                        },
+                                        "created_at": {
+                                            "type": "string"
+                                        },
+                                        "updated_at": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "example": [
+                                        {
+                                            "id": "2476f2cb-185f-46f0-8e1e-d67e3335b43c",
+	                                        "admin": true,
+	                                        "name": "Diego Felipe ",
+	                                        "email": "dark_slim@hotmail.com",
+	                                        "created_at": "2022-03-10T03:14:39.861Z",
+	                                        "updated_at": "2022-03-10T03:18:09.484Z"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description":"Usuário não encontrado",
+                        "content": {
+                            "application/json": {
+                                "shema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "error": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "example": {
+                                            "error": "User not found!"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                
+            }
+        },
+        "/users/:user_id": {
+            "get": {
+                "tags":["Users"],
+                "sumary": "List user information",
+                "description": "Retorna um usuário específico",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "user_id",
+                        "shema": {
+                            "type": "string"
+                        },
+                        "required":true,
+                        "minimum":1,
+                        "description":"Parameter user to search"
+                    }
+                ],
+                "response": {
+                    "201": {
+                        "description": "Sucess",
+                        "content": {
+                            "application/json": {
+                                "shema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "id": {
+                                                "type": "string"
+                                            },
+                                            "name": {
+                                                "type": "string"
+                                            },
+                                            "admin": {
+                                                "type": "boolean"
+                                            },
+                                            "email": {
+                                                "type": "string"
+                                            },
+                                            "created_at": {
+                                                "type": "string"
+                                            },
+                                            "updated_at": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "example": [
+                                            {
+                                                "id": "2476f2cb-185f-46f0-8e1e-d67e3335b43c",
+	                                            "admin": true,
+	                                            "name": "Diego Felipe ",
+	                                            "email": "dark_slim@hotmail.com",
+	                                            "created_at": "2022-03-10T03:14:39.861Z",
+	                                            "updated_at": "2022-03-10T03:18:09.484Z"
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Usuário não encontrado",
+                        "content": {
+                            "application/json": {
+                                "shema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "error": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "example": {
+                                            "error":"User not found!"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }    
+        
+    }
+}
