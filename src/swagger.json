@@ -5,8 +5,7 @@
         "description": "API para criação de usuários",
         "version": "1.0.0",
         "contact":{
-            "email":"alimadeoliveiranatalia@gmail.com",
-            "likn":"https://www.linkedin.com/in/nat%C3%A1lia-lima-oliveira-969330124/"
+            "email":"alimadeoliveiranatalia@gmail.com"
         }
     },
     "paths":{
@@ -18,18 +17,20 @@
                 "requestBody": {
                     "content": {
                         "application/json" : {
-                            "shema": {
+                            "schema": {
                                 "type": "object",
                                 "properties": {
                                     "name": {
+                                        "description": "Nome do Usuário",
                                         "type":"string"
                                     },
                                     "email": {
+                                        "description":"Email do Usuário",
                                         "type":"string"
                                     }
                                 },
                                 "example": {
-                                    "name": "Natália Lima",
+                                    "name": "Your Username",
                                     "email":"seu_email@mail.com"
                                 }
                             }
@@ -41,14 +42,14 @@
                         "description": "Usuário criado com sucesso",
                         "content": {
                             "application/json": {
-                                "shema": {
+                                "schema": {
                                     "type":"object",
                                     "properties": {
                                         "name": {
                                             "type":"string"
                                         },
                                         "admin": {
-                                            "type":"string"
+                                            "type":"boolean"
                                         },
                                         "email": {
                                             "type":"string"
@@ -68,7 +69,7 @@
                         "description":"User Alreay Exists",
                         "content": {
                             "application/json": {
-                                "shema": {
+                                "schema": {
                                     "type": "array",
                                     "items": {
                                         "type": "object",
@@ -88,29 +89,32 @@
                     }
                     
                 }
-            },
+            }            
+        },
+        "/users/{userId}": {
+            "operationId": "userId",
+            "parameters":[
+                {
+                    "in":"path",
+                    "name":"userId",
+                    "required": true,
+                    "minimum": 1,
+                    "description":"Parameter user admin",
+                    "schema": {
+                        "type":"string"
+                    }                      
+                }
+            ],
             "get": {
                 "tags":["Users"],
                 "sumary": "List all Users",
                 "description": "Retorna todos os usuários se quem estiver solicitando for um usuário admin",
-                "parameters":[
-                    {
-                        "in":"header",
-                        "name":"user_id",
-                        "shema": {
-                            "type":"string"
-                        },
-                        "required": true,
-                        "minimum": 1,
-                        "description":"Parameter user admin"
-                    }
-                ],
-                "response":{
+                "responses":{
                     "201": {
                         "description": "Sucess",
                         "content": {
                             "application/json": {
-                                "shema": {
+                                "schema": {
                                     "type": "array",
                                     "items": {
                                         "type": "object",
@@ -138,7 +142,7 @@
                                             {
                                                 "id":"2476f2cb-185f-46f0-8e1e-d67e3335b43c",
                                                 "admin": false,
-                                                "name": "Username1",
+                                                "name": "User_1",
                                                 "email":"seu_email@mail.com",
                                                 "created_at":"2022-03-10T03:14:39.861Z",
                                                 "updated_at":"2022-03-10T03:14:39.861Z"
@@ -146,7 +150,7 @@
                                             {
                                                 "id": "2476f2cb-185f-46f0-8e1e-d67e3335b43c",
                                                 "admin": true,
-                                                "name":"Natália Lima",
+                                                "name":"User_2",
                                                 "email":"seu_email@mail.com",
                                                 "created_at":"2022-03-10T03:14:39.861Z",
                                                 "updated_at":"2022-03-10T03:18:09.484Z"
@@ -161,7 +165,7 @@
                         "description":"",
                         "content": {
                             "application/json": {
-                                "shema": {
+                                "schema": {
                                     "type": "object",
                                     "properties": {
                                         "error": {
@@ -178,16 +182,17 @@
                 }
             }
         },
-        "/users/:user_id/admin": {
+        "/users/{user_id}/admin": {
             "patch": {
                 "tags":["Users"],
                 "sumary": "User admin",
                 "description":"Concede status admin à um usuário específico",
+                "operationId":"user_id",
                 "parameters": [
                     {
                         "in": "path",
                         "name": "user_id",
-                        "shema": {
+                        "schema": {
                             "type": "string"
                         },
                         "required": true,
@@ -195,12 +200,12 @@
                         "description": "Parameter user to admin"
                     }
                 ],
-                "response": {
+                "responses": {
                     "201": {
                         "description": "Sucess",
                         "content": {
                             "application/json": {
-                                "shema": {
+                                "schema": {
                                     "type": "array",
                                     "properties": {
                                         "id": {
@@ -226,8 +231,8 @@
                                         {
                                             "id": "2476f2cb-185f-46f0-8e1e-d67e3335b43c",
 	                                        "admin": true,
-	                                        "name": "Diego Felipe ",
-	                                        "email": "dark_slim@hotmail.com",
+	                                        "name": "User ",
+	                                        "email": "seu_email@mail.com",
 	                                        "created_at": "2022-03-10T03:14:39.861Z",
 	                                        "updated_at": "2022-03-10T03:18:09.484Z"
                                         }
@@ -240,7 +245,7 @@
                         "description":"Usuário não encontrado",
                         "content": {
                             "application/json": {
-                                "shema": {
+                                "schema": {
                                     "type": "array",
                                     "items": {
                                         "type": "object",
@@ -261,16 +266,17 @@
                 
             }
         },
-        "/users/:user_id": {
+        "/users/{user_id}": {
             "get": {
                 "tags":["Users"],
                 "sumary": "List user information",
                 "description": "Retorna um usuário específico",
+                "operationId":"user_id",
                 "parameters": [
                     {
                         "in": "path",
                         "name": "user_id",
-                        "shema": {
+                        "schema": {
                             "type": "string"
                         },
                         "required":true,
@@ -278,12 +284,12 @@
                         "description":"Parameter user to search"
                     }
                 ],
-                "response": {
+                "responses": {
                     "201": {
                         "description": "Sucess",
                         "content": {
                             "application/json": {
-                                "shema": {
+                                "schema": {
                                     "type": "array",
                                     "items": {
                                         "type": "object",
@@ -311,8 +317,8 @@
                                             {
                                                 "id": "2476f2cb-185f-46f0-8e1e-d67e3335b43c",
 	                                            "admin": true,
-	                                            "name": "Diego Felipe ",
-	                                            "email": "dark_slim@hotmail.com",
+	                                            "name": "User ",
+	                                            "email": "seu_email@mail.com",
 	                                            "created_at": "2022-03-10T03:14:39.861Z",
 	                                            "updated_at": "2022-03-10T03:18:09.484Z"
                                             }
@@ -326,7 +332,7 @@
                         "description": "Usuário não encontrado",
                         "content": {
                             "application/json": {
-                                "shema": {
+                                "schema": {
                                     "type": "array",
                                     "items": {
                                         "type": "object",
